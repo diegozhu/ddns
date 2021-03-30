@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "dnspod-import-core": "^0.0.3"
+  }
+}
