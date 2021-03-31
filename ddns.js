@@ -1,7 +1,8 @@
 const { networkInterfaces, hostname } = require('os'),
   logfile = 'C:\\ddns.log',
   fs = require('fs'),
-  args = process.argv.slice(2);
+  args = process.argv.slice(2),
+  { execSync } require('child_process');
 
 console.log(process.argv.slice(2));
 
@@ -27,7 +28,11 @@ if (ipv6) {
   console.log(data);
   fs.appendFileSync(logfile, `${new Date().toISOString().substring(0, 19).replace('T', ' ')} ${JSON.stringify(data)}`);
   try {
-    updateDns(data);
+	  if(!args[0] || !args[0]){
+		console.log('please provide dnspod login token and domain id');
+	  }else{
+		updateDns(data); 
+	  }
   } catch (e) {
     console.error(e);
     fs.appendFileSync(logfile, `${new Date().toISOString().substring(0, 19).replace('T', ' ')} ${JSON.stringify(e)}`);
@@ -35,3 +40,7 @@ if (ipv6) {
 } else {
   fs.appendFileSync(logfile, `${new Date().toISOString().substring(0, 19).replace('T', ' ')} could not find IPv6 address`);
 }
+
+console.log('check ddns update');
+execSync('git pull', {stdio: 'inherit'})
+
