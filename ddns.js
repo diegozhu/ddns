@@ -1,6 +1,6 @@
 const { networkInterfaces, hostname } = require('os'),
   { execSync } = require('child_process'),
-  logfile = 'C:\\ddns.log',
+  logfile = 'C:\\ddnslog.log',
   fs = require('fs'),
   args = process.argv.slice(2);
 
