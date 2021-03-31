@@ -9,12 +9,23 @@ process.env.DOMAIN_ID = args[1];
  
 const updateDns = require('dnspod-import-core'),
 	log = (str)=>{
-	  const text = `${new Date().toISOString().substring(0, 19).replace('T', ' ')} ${JSON.stringify(str)}`;
+	  const text = `${new Date().toISOString().substring(0, 19).replace('T', ' ')} ${typeof str === 'string' ? str : JSON.stringify(str)}`;
 	  fs.appendFileSync(logfile, text + '\r\n');
 	  console.log(text);
 	};
 
+log('');
+log('');
 log(process.argv.slice(2));
+
+process.on('uncaughtException', function(err){
+	try{
+		log(err.message);
+		log(err.stack);
+	}catch(e){
+		console.error(e);
+	}
+});
 
 const nets = networkInterfaces();
 const res = [];
@@ -38,6 +49,7 @@ if (ipv6) {
 		updateDns(data); 
 	  }
   } catch (e) {
+	log('error');
     log(e);
   }
 } else {
