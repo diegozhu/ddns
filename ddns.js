@@ -2,7 +2,7 @@ const { networkInterfaces, hostname } = require('os'),
   { execSync } = require('child_process'),
   args = process.argv.slice(2),
   fs = require('fs'),
-  getLogfile = () => 'C:\\Program Files\\ddns\\' + new Date().toISOString().substring(0, 10) + '.log';
+  getLogfile = () => '.\\' + new Date().toISOString().substring(0, 10) + '.log';
 let lastIp = '';
 let logFile = '';
 
