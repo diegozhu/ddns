@@ -10,8 +10,6 @@ const timeInterval = 5 * 1000;
 var stdout = process.stdout.write,
   stderr = process.stderr.write;
 
-
-
 dealWithOutput(process.stdout, stdout);
 dealWithOutput(process.stderr, stderr);
 
