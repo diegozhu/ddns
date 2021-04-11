@@ -5,4 +5,3 @@
 
 git pull
 node ddns.js
-goto begin;
