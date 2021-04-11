@@ -28,13 +28,20 @@ process.on('uncaughtException', function (err) {
   console.error((err && err.stack) ? err.stack : err);
 });
 
+process.on('error', function(err) {
+  console.error((err && err.stack) ? err.stack : err);
+});
+
+
 function checkIp() {
   dealWithOutput(process.stdout, stdout);
   dealWithOutput(process.stderr, stderr);
   execSync('git pull');
-  process.env.LOGIN_TOKEN = args[0] || process.env.LOGIN_TOKEN;
-  process.env.DOMAIN_ID = args[1] || process.env.DOMAIN_ID;
-  process.env.HOSTNAME = args[2] || process.env.DOMAIN_ID || hostname().toLowerCase();
+
+  const envs = (process.env.DDNS || '').split('/');
+  process.env.LOGIN_TOKEN = args[0] || process.env.LOGIN_TOKEN || envs[0];
+  process.env.DOMAIN_ID = args[1] || process.env.DOMAIN_ID || envs[1];
+  process.env.HOSTNAME = args[2] || envs[2] || hostname().toLowerCase();
   console.log('process.env.LOGIN_TOKEN:' + process.env.LOGIN_TOKEN);
   console.log('process.env.DOMAIN_ID:' + process.env.DOMAIN_ID + ' ' + process.env.DOMAIN_ID.length);
 
