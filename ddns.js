@@ -81,4 +81,4 @@ setInterval(() => {
   } catch (e) {
     console.error(e);
   }
-}, 5 * 60 * 1000);
+}, 6 * 60 * 1000);
