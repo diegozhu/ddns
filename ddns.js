@@ -1,4 +1,5 @@
 const { networkInterfaces, hostname } = require('os'),
+  { execSync } = require('child_process'),
   args = process.argv.slice(2),
   fs = require('fs'),
   getLogfile = () => 'C:\\Program Files\\ddns\\' + new Date().toISOString().substring(0, 10) + '.log';
@@ -23,27 +24,6 @@ function dealWithOutput(source, originFunc) {
   }
 }
 
-
-
-
-// function checkoutput() {
-//   if (logFile !== getLogfile()) {
-// logFile = getLogfile();
-// function newErr() {
-//   const txt = `${new Date().toISOString().substring(0, 19).replace('T', ' ')} ${typeof arguments[0] === 'string' ? arguments[0] : JSON.stringify(arguments[0])}`;
-//   rawStderr.write.apply(process.stderr, arguments);
-//   fs.appendFileSync(logFile, txt);
-// }
-// function newStd() {
-//   const txt = `${new Date().toISOString().substring(0, 19).replace('T', ' ')} ${typeof arguments[0] === 'string' ? arguments[0] : JSON.stringify(arguments[0])}`;
-//   rawStdout.write.apply(process.stdout, arguments);
-//   fs.appendFileSync(logFile, txt);
-// }
-// process.stderr.write = newErr;
-// process.stdout.write = newStd;
-//   }
-// }
-
 process.on('uncaughtException', function (err) {
   console.error((err && err.stack) ? err.stack : err);
 });
@@ -51,6 +31,7 @@ process.on('uncaughtException', function (err) {
 function checkIp() {
   dealWithOutput(process.stdout, stdout);
   dealWithOutput(process.stderr, stderr);
+  execSync('git pull');
   process.env.LOGIN_TOKEN = args[0] || process.env.LOGIN_TOKEN;
   process.env.DOMAIN_ID = args[1] || process.env.DOMAIN_ID;
   process.env.HOSTNAME = args[2] || process.env.DOMAIN_ID || hostname().toLowerCase();
@@ -77,8 +58,8 @@ function checkIp() {
     if (!process.env.LOGIN_TOKEN || !process.env.DOMAIN_ID) {
       throw new Error('please provide dnspod login token and domain id');
     } else {
-      // const updateDns = require('dnspod-import-core');
-      // updateDns(data);
+      const updateDns = require('dnspod-import-core');
+      updateDns(data);
       lastIp = ipv6
     }
   } else {
